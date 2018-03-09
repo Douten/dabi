@@ -4,8 +4,8 @@ dabi is a minimal approach to an to-do app inspired from [Cal Newport's book](ht
 
 ### Techonology
 
-dabi is built on [Vue.js](https://vuejs.org/) with [Bulma](https://bulma.io/).
+dabi is built on [Vue.js](https://vuejs.org/) with [materializecss](http://next.materializecss.com) (just for the stylized check box - sue me).
 It runs on top of [Habitica](https://habitica.com/)'s API.
 
 ---
-made for DIG4503 with ❤️
+made for DIG4503 with lots of ☕ & 💢
