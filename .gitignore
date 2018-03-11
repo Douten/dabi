@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+src/php/connect-info.php
 npm-debug.log
 yarn-error.log
 

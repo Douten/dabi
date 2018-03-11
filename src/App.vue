@@ -3,45 +3,50 @@
     <div v-if="isLoading" class="progress">
       <div class="indeterminate"></div>
     </div>
-    <transition name="expand">
-      <section v-if="showAddTask" class="addTask" @keydown.enter="changeTask('add', $event)">
-          <div class="input-field">
-            <input id="task-name" ref="newTaskName" type="text" class="validate" v-model="newTaskVar.text">
-            <label for="task-name">New Task</label>
-          </div>
-          <div class="input-field">
-            <textarea id="task-notes" class="materialize-textarea" v-model="newTaskVar.notes"></textarea>
-            <label for="task-notes">Notes (shift+enter for new line)</label>
-          </div>
-      </section>
-    </transition>
-    <ul class="task-list">
-      <li v-for="(task, index) in tasks" :key="task.id">
-          <label :for="task.id">
-            <input type="checkbox"  @click="toggleTask(task)" class="filled-in" :id="task.id" :checked="task.completed" />
-            <span></span>
-          </label>
-          <div @click.stop="toggleForm('edit',task)">
-            {{ task.text }}
-              <transition name="expand">
-              <section v-on:click.stop v-if="task.showEdit" class="addTask" @keydown.enter="changeTask('edit', $event, task.id, index)">
-                  <div class="input-field">
-                    <input :id="task.id+'edit'" type="text" :placeholder="task.text" class="validate" v-model="newTaskVar.text">
-                    <label for="task-name" class="active">Edit Task</label>
-                  </div>
-                  <div class="input-field">
-                    <textarea :id="task.id+'notes'" :placeholder="task.notes" class="materialize-textarea" v-model="newTaskVar.notes"></textarea>
-                    <label for="task-notes" class="active">Edit Notes</label>
-                  </div>
-                  <button @click="changeTask('delete', $event, task.id, index)" class="btn red lighten-2 waves-effect waves-light" type="submit" name="action">Delete
-                    <i class="material-icons right">delete</i>
-                  </button>
-              </section>
-              </transition>
-          </div>
-      </li>
-    </ul>
-    <a class="btn-floating btn-large waves-effect waves-light red" @click="toggleForm('add')"><i class="material-icons">{{ createButton }}</i></a>
+    <div id="loginForm">
+        
+    </div>
+    <div v-if="loggedIn" id="dabi">
+      <transition name="expand">
+        <section v-if="showAddTask" class="addTask" @keydown.enter="changeTask('add', $event)">
+            <div class="input-field">
+              <input id="task-name" ref="newTaskName" type="text" class="validate" v-model="newTaskVar.text">
+              <label for="task-name">New Task</label>
+            </div>
+            <div class="input-field">
+              <textarea id="task-notes" class="materialize-textarea" v-model="newTaskVar.notes"></textarea>
+              <label for="task-notes">Notes (shift+enter for new line)</label>
+            </div>
+        </section>
+      </transition>
+      <ul class="task-list">
+        <li v-for="(task, index) in tasks" :key="task.id">
+            <label :for="task.id">
+              <input type="checkbox"  @click="toggleTask(task)" class="filled-in" :id="task.id" :checked="task.completed" />
+              <span></span>
+            </label>
+            <div @click.stop="toggleForm('edit',task)">
+              {{ task.text }}
+                <transition name="expand">
+                <section v-on:click.stop v-if="task.showEdit" class="addTask" @keydown.enter="changeTask('edit', $event, task.id, index)">
+                    <div class="input-field">
+                      <input :id="task.id+'edit'" type="text" :placeholder="task.text" class="validate" v-model="newTaskVar.text">
+                      <label for="task-name" class="active">Edit Task</label>
+                    </div>
+                    <div class="input-field">
+                      <textarea :id="task.id+'notes'" :placeholder="task.notes" class="materialize-textarea" v-model="newTaskVar.notes"></textarea>
+                      <label for="task-notes" class="active">Edit Notes</label>
+                    </div>
+                    <button @click="changeTask('delete', $event, task.id, index)" class="btn red lighten-2 waves-effect waves-light" type="submit" name="action">Delete
+                      <i class="material-icons right">delete</i>
+                    </button>
+                </section>
+                </transition>
+            </div>
+        </li>
+      </ul>
+      <a class="btn-floating btn-large waves-effect waves-light red" @click="toggleForm('add')"><i class="material-icons">{{ createButton }}</i></a>
+    </div>
   </div>
 </template>
 
@@ -56,6 +61,7 @@ export default {
       showAddTask: false,
       createButton: "add",
       newTaskVar: {type:"todo"},//just todo for now
+      loggedIn: false,
       tasks: {}
     }
   },
