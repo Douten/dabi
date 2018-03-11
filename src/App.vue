@@ -3,8 +3,22 @@
     <div v-if="isLoading" class="progress">
       <div class="indeterminate"></div>
     </div>
-    <div id="loginForm">
-        
+    <div id="loginForm" @keydown.enter="login()">
+      <div class="input-field col s12">
+        <input id="username" type="text" class="validate" v-model="loginInfo.un">
+        <label for="username">User Name</label>
+      </div>      
+      <div class="input-field col s12">
+        <input id="password" type="password" class="validate" v-model="loginInfo.pw">
+        <label for="password">Password</label>
+      </div>
+      <a class="waves-effect waves-light btn" @click="createUser()"><i class="material-icons right">account_circle</i>create</a>
+      <a class="waves-effect waves-light btn" @click="login()"><i class="material-icons right">chevron_right</i>login</a>
+      <div v-if="loginError" class="card orange darken-2">
+        <div class="card-content white-text">
+          <p>{{ loginError }}</p>
+        </div>
+      </div>
     </div>
     <div v-if="loggedIn" id="dabi">
       <transition name="expand">
@@ -15,7 +29,8 @@
             </div>
             <div class="input-field">
               <textarea id="task-notes" class="materialize-textarea" v-model="newTaskVar.notes"></textarea>
-              <label for="task-notes">Notes (shift+enter for new line)</label>
+              <label for="task-notes">Notes</label>
+              <span class="helper-text" data-error="wrong" data-success="right">(shift+enter for new line)</span>
             </div>
         </section>
       </transition>
@@ -61,7 +76,9 @@ export default {
       showAddTask: false,
       createButton: "add",
       newTaskVar: {type:"todo"},//just todo for now
+      loginInfo: {},
       loggedIn: false,
+      loginError: false,
       tasks: {}
     }
   },
@@ -237,6 +254,23 @@ export default {
       .catch(function (error) {
         console.log(error);
       });     
+    },
+    createUser(){
+
+    },
+    login(){
+      axios.post("http://sulley.cah.ucf.edu/~mi772228/dabi/log-in.php", this.loginInfo)
+          .then(
+            response => {
+              this.newTaskVar = {type:"todo"};
+              this.toggleForm(action);
+              this.isLoading = false;
+              this.tasks.unshift(response.data.data);
+              //this.loadTasks();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
   },
   beforeCreate(){
